@@ -8,14 +8,25 @@ namespace WpfHomeWork14
 {
     public enum ProductCategory
     {
-        Applience,
+        Appliance,
         Food,
         Meds
     }
-    class Product
+    public class Product
     {
+        private decimal price;      
         public string Title { get; set; }
-        public decimal Price { get; set; }
+        public decimal Price
+        {
+            get { return Math.Round(price, 2); }
+            set
+            {
+                if (value > 0)
+                    price = value;
+                else
+                    price = 0;
+            }
+        }
         public ProductCategory Category { get; set; }
         public string ImageSource { get; set; }
     }

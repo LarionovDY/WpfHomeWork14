@@ -5,8 +5,61 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfHomeWork14"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="MainWindow" Height="500" Width="500">
+    <Window.Resources>
+        <local:CategoryConverter x:Key="converter"/>
+        <DataTemplate x:Key="myTemplate">
+            <Border x:Name="border" BorderThickness="2" Padding="5" Margin="5" CornerRadius="5">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>                        
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Наименование:"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Path=Title}"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Цена:"/>
+                    <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal">
+                        <TextBlock Text="{Binding Path=Price}"/>
+                        <TextBlock Text=" руб."/>
+                    </StackPanel>                   
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Категория:"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Path=Category, Converter={StaticResource converter}}"/>
+                    <Image  Grid.Row="0" Grid.Column="2" Grid.RowSpan="3"
+                            Width="50" Height="50"
+                            Source="{Binding Path=ImageSource}"/>
+                </Grid>
+            </Border>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=Category}">
+                    <DataTrigger.Value>
+                        <local:ProductCategory>Appliance</local:ProductCategory>
+                    </DataTrigger.Value>
+                    <Setter TargetName="border" Property="BorderBrush" Value="Blue"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Category}">
+                    <DataTrigger.Value>
+                        <local:ProductCategory>Food</local:ProductCategory>
+                    </DataTrigger.Value>
+                    <Setter TargetName="border" Property="BorderBrush" Value="Red"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=Category}">
+                    <DataTrigger.Value>
+                        <local:ProductCategory>Meds</local:ProductCategory>
+                    </DataTrigger.Value>
+                    <Setter TargetName="border" Property="BorderBrush" Value="Green"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+    </Window.Resources>    
+    <StackPanel>
+        <TextBlock Name="productTitle" FontSize="15" Text="Информация о товарах" HorizontalAlignment="Center" Margin="5"/>
+        <ListBox Name="lstBox" Width="400" Margin="10" HorizontalContentAlignment="Stretch"
+                 ItemTemplate="{StaticResource ResourceKey=myTemplate}"/>
+    </StackPanel>
 </Window>
